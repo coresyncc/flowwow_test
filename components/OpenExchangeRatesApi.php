@@ -43,7 +43,7 @@ class OpenExchangeRatesApi extends Component implements ExchangeRatesApi
             ->send();
 
         if (!$response->getIsOk()) {
-            throw new \Exception('Failed to fetch exchange rates');
+            throw new \Exception($response->getData()['description'], $response->getStatusCode());
         }
 
         $data = $response->data;

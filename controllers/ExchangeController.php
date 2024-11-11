@@ -18,6 +18,14 @@ class ExchangeController extends Controller
 
     public function actionIndex(): Response
     {
-        return $this->asJson($this->api->getLatest());
+        try {
+            $response = $this->api->getLatest($this->request->get('base', 'USD'));
+            return $this->asJson($response);
+        } catch (\Exception $e) {
+            return $this->asJson([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ])->setStatusCode($e->getCode());
+        }
     }
 }
